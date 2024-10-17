@@ -38,7 +38,7 @@ jobs:
       - name: dist
         run: sh build.sh
 
-      - name: push main
+      - name: push next
         run: |
           cd dist/
           git init
@@ -46,5 +46,5 @@ jobs:
           git config --local user.name "ningmengchongshui"
           git add -A
           git commit -m "自动打包 - ${{ env.BEIJING_TIME }}"
-          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/main.git
-          git push github HEAD:main -f
+          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/next.git
+          git push github HEAD:next -f

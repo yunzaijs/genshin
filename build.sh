@@ -1,3 +1,5 @@
+#!/bin/bash
+set -e
 mkdir dist
 cp -rf lib dist/lib
 cp -rf model dist/model

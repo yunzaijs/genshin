@@ -11,7 +11,7 @@ git clone --depth=1 https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/m
 
 ```sh
 # 原神插件
-git clone --depth=1 https://github.com/yunzaijs/genshin.git ./plugins/genshin/
+git clone --depth=1 -b next https://github.com/yunzaijs/genshin.git ./plugins/genshin/
 ```
 
 ### 帮助
