@@ -3,7 +3,7 @@ name: Package on Push
 on:
   push:
     branches:
-      - dev
+      - main
     tags:
       - 'v*.*.*'
 
