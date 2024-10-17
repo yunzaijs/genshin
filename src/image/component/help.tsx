@@ -1,10 +1,9 @@
 import React from 'react'
 import { BOT_NAME, ConfigController } from 'yunzaijs'
-import { createRequire, LinkStyleSheet } from 'jsxp'
-import img_genshen from '@src/assets/img/原神.png'
+import { LinkStyleSheet } from 'jsxp'
 import css_output from '@src/assets/css/help.css'
-const require = createRequire(import.meta.url)
-export default function Help({ helpData }) {
+import icons from './icons'
+export default function Help({ data }) {
   return (
     <html>
       <head>
@@ -17,20 +16,15 @@ export default function Help({ helpData }) {
             <h2 className="day_text">
               使用说明 V{ConfigController?.package?.version ?? '4'}
             </h2>
-            <img className="genshin_logo" src={img_genshen} />
+            <img className="genshin_logo" src={icons.genshen} />
           </div>
-          {helpData.map((val, index) => (
+          {data.map((val, index) => (
             <div key={index} className="data_box">
               <div className="tab_lable">{val.group}</div>
               <div className="list">
                 {val.list.map((item, index) => (
                   <div className="item" key={index}>
-                    <img
-                      className="item-img"
-                      src={require(
-                        `../../../resources/assets/img/icon/${item.icon}.png`
-                      )}
-                    />
+                    <img className="item-img" src={icons[item.icon]} />
                     <div className="title">
                       <div className="text">{item.title}</div>
                       <div className="dec">{item.desc}</div>

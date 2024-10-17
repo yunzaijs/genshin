@@ -22,11 +22,11 @@ export class help extends Plugin {
       this.e.reply(Segment.image(cache))
       return
     }
-    const dir = require('../../resources/assets/yaml/genshin.yaml')
+    const dir = require('../../defSet/bot/help.yaml')
     try {
       const Data = parse(readFileSync(dir, 'utf-8'))
       const Bf = await screenshotRender({
-        helpData: Data
+        data: Data
       })
       if (Bf && typeof Bf !== 'string') {
         cache = Bf
