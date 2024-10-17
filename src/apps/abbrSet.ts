@@ -6,9 +6,11 @@ import { dirname } from 'node:path'
 import gsCfg from '@src/model/gsCfg.js'
 
 const file = './plugins/genshin/config/role.name.yaml'
+
 const str = `神里绫华:
 - 龟龟
-- 小乌龟`
+- 小乌龟
+`
 
 // files
 

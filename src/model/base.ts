@@ -5,7 +5,11 @@ import { Character } from '@src/miao.js'
 export default class base {
   e
   userId
-  constructor(e = {}) {
+  constructor(
+    e: {
+      user_id?: string
+    } = {}
+  ) {
     this.e = e
     this.userId = e?.user_id
   }

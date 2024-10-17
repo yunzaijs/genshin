@@ -3,7 +3,7 @@ name: Package on Push
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
@@ -35,6 +35,16 @@ jobs:
       - name: build
         run: yarn build
 
-      - name: push docs
+      - name: dist
+        run: sh build.sh
+
+      - name: push main
         run: |
-          echo "待补充"
+          cd dist/
+          git init
+          git config --local user.email "ningmengchongshui@gmail.com"
+          git config --local user.name "ningmengchongshui"
+          git add -A
+          git commit -m "自动打包 - ${{ env.BEIJING_TIME }}"
+          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/main.git
+          git push github HEAD:main -f
