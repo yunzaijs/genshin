@@ -1,4 +1,10 @@
 {
-  "include": ["src/**/*"],
-  "extends": "yunzai/tsconfig.json"
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "jsxp.config.tsx"],
+  "extends": "lvyjs/tsconfig.json"
 }

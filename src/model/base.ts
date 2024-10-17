@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { ConfigController as cfg } from 'yunzai'
-import { Character } from './miao.js'
+import { ConfigController as cfg } from 'yunzaijs'
+import { Character } from '@src/miao.js'
 
 export default class base {
   e
@@ -38,7 +38,7 @@ export default class base {
     let yunzaiName = cfg.package.name
     if (yunzaiName == 'miao-yunzai') {
       yunzaiName = 'Miao-Yunzai'
-    } else if (yunzaiName == 'yunzai') {
+    } else if (yunzaiName == 'yunzaijs') {
       yunzaiName = 'Yunzai-Bot'
     } else if (yunzaiName == 'trss-yunzai') {
       yunzaiName = 'TRSS-Yunzai'

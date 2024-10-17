@@ -1,7 +1,7 @@
-import { Plugin } from 'yunzai'
+import { Plugin } from 'yunzaijs'
 
-import gsCfg from '../model/gsCfg.js'
-import User from '../model/user.js'
+import gsCfg from '@src/model/gsCfg.js'
+import User from '@src/model/user.js'
 export class user extends Plugin {
   constructor(e) {
     super({

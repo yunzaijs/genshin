@@ -1,8 +1,8 @@
-import base from './base.js'
-import gsCfg from './gsCfg.js'
+import base from '@src/model/base.js'
+import gsCfg from '@src/model/gsCfg.js'
 import lodash from 'lodash'
 import moment from 'moment'
-import { Character, Weapon } from './miao.js'
+import { Character, Weapon } from '@src/miao.js'
 
 export default class GachaData extends base {
   pool

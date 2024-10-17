@@ -1,1 +1,1 @@
-export * from 'yunzai-mys'
+export * from '@yunzaijs/mys'

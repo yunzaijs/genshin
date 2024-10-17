@@ -1,14 +1,14 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 import lodash from 'lodash'
 import fs from 'node:fs'
-import { makeForwardMsg } from 'yunzai'
-import { MysUser, NoteUser, UserGameDB, sequelize } from 'yunzai-mys'
+import { makeForwardMsg } from 'yunzaijs'
+import { MysUser, NoteUser, UserGameDB, sequelize } from '@yunzaijs/mys'
 
-import { MysInfo } from 'yunzai-mys'
-import gsCfg from './gsCfg.js'
+import { MysInfo } from '@yunzaijs/mys'
+import gsCfg from '@src/model/gsCfg.js'
 import { promisify } from 'node:util'
 import YAML from 'yaml'
-import { Data, Player } from './miao.js'
+import { Data, Player } from '@src/model/miao.js'
 
 export default class User extends base {
   constructor(e) {

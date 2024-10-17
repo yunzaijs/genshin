@@ -1,9 +1,9 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 import lodash from 'lodash'
 import moment from 'moment'
 import fs from 'node:fs'
-import { MysInfo } from 'yunzai-mys'
-import gsCfg from './gsCfg.js'
+import { MysInfo } from '@yunzaijs/mys'
+import gsCfg from '@src/model/gsCfg.js'
 
 import { Character } from './miao.js'
 

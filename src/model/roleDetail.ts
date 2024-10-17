@@ -1,10 +1,10 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 import lodash from 'lodash'
 import fs from 'node:fs'
 import fetch from 'node-fetch'
-import { downFile } from 'yunzai'
-import { MysInfo } from 'yunzai-mys'
-import gsCfg from './gsCfg.js'
+import { downFile } from 'yunzaijs'
+import { MysInfo } from '@yunzaijs/mys'
+import gsCfg from '@src/model/gsCfg.js'
 
 export default class RoleDetail extends base {
   constructor(e) {

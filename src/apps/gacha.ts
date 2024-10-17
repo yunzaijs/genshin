@@ -1,5 +1,5 @@
-import { Plugin } from 'yunzai'
-import GachaData from '../model/gachaData.js'
+import { Plugin } from 'yunzaijs'
+import GachaData from '@src/model/gachaData.js'
 import fs from 'node:fs'
 import lodash from 'lodash'
 export class gacha extends Plugin {

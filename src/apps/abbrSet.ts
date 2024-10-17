@@ -1,9 +1,9 @@
 import fs, { mkdirSync } from 'node:fs'
-import { Plugin, makeForwardMsg } from 'yunzai'
+import { Plugin, makeForwardMsg } from 'yunzaijs'
 import YAML from 'yaml'
 import lodash from 'lodash'
 import { dirname } from 'node:path'
-import gsCfg from '../model/gsCfg.js'
+import gsCfg from '@src/model/gsCfg.js'
 
 const file = './plugins/genshin/config/role.name.yaml'
 const str = `神里绫华:

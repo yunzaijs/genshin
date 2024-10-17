@@ -1,8 +1,8 @@
-import { puppeteer } from 'yunzai'
+import { puppeteer } from 'yunzaijs'
 import fetch from 'node-fetch'
 import moment from 'moment'
 import fs from 'fs'
-import base from './base.js'
+import base from '@src/model/base.js'
 
 if (!fs.existsSync('./data/payLog/')) {
   fs.mkdirSync('./data/payLog/')

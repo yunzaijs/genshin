@@ -1,5 +1,5 @@
-import { Plugin } from 'yunzai'
-import Ledger from '../model/ledger.js'
+import { Plugin } from 'yunzaijs'
+import Ledger from '@src/model/ledger.js'
 import fs from 'node:fs'
 
 const file = ['./data/NoteData', './data/SR_NoteData']

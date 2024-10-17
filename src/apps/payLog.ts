@@ -1,9 +1,9 @@
-import { Plugin } from 'yunzai'
-import { NoteUser } from 'yunzai-mys'
+import { Plugin } from 'yunzaijs'
+import { NoteUser } from '@yunzaijs/mys'
 import fs from 'fs'
 import path from 'path'
 import yaml from 'yaml'
-import { PayData, renderImg } from '../model/payLogData.js'
+import { PayData, renderImg } from '@src/model/payLogData.js'
 export class payLog extends Plugin {
   dirPath = path.resolve('./data/payLog/')
   authKey = ''

@@ -1,9 +1,9 @@
-import { Plugin } from 'yunzai'
-import gsCfg from '../model/gsCfg.js'
+import { Plugin } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
 import lodash from 'lodash'
 import fs from 'node:fs'
 import fetch from 'node-fetch'
-import { downFile } from 'yunzai'
+import { downFile } from 'yunzaijs'
 gsCfg.cpCfg('mys', 'set')
 /**
  * Modify By: ifeng0188

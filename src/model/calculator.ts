@@ -1,8 +1,8 @@
-import base from './base.js'
-import { MysApi } from 'yunzai-mys'
+import base from '@src/model/base.js'
+import { MysApi } from '@yunzaijs/mys'
 import lodash from 'lodash'
-import { MysInfo } from 'yunzai-mys'
-import gsCfg from './gsCfg.js'
+import { MysInfo } from '@yunzaijs/mys'
+import gsCfg from '@src/model/gsCfg.js'
 
 export default class Calculator extends base {
   constructor(e) {

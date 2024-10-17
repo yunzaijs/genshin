@@ -1,6 +1,6 @@
-import { Plugin } from 'yunzai'
-import { MysInfo } from 'yunzai-mys'
-import User from '../model/user.js'
+import { Plugin } from 'yunzaijs'
+import { MysInfo } from '@yunzaijs/mys'
+import User from '@src/model/user.js'
 export class userAdmin extends Plugin {
   constructor(e) {
     super({

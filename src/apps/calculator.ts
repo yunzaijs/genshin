@@ -1,7 +1,7 @@
-import { Plugin, puppeteer } from 'yunzai'
-import gsCfg from '../model/gsCfg.js'
-import Calculator from '../model/calculator.js'
-import Blueprint from '../model/blueprint.js'
+import { Plugin, puppeteer } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
+import Calculator from '@src/model/calculator.js'
+import Blueprint from '@src/model/blueprint.js'
 export class calculator extends Plugin {
   constructor() {
     super({

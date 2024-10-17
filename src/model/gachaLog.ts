@@ -1,10 +1,10 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 import fetch from 'node-fetch'
 import lodash from 'lodash'
 import fs from 'node:fs'
-import { downFile } from 'yunzai'
-import gsCfg from './gsCfg.js'
-import { Character, Weapon } from './miao.js'
+import { downFile } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
+import { Character, Weapon } from '@src/miao.js'
 import { promisify } from 'util'
 const sleep = promisify(setTimeout)
 

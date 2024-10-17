@@ -1,8 +1,8 @@
-import { ConfigController as cfg, downFile } from 'yunzai'
-import base from './base.js'
+import { ConfigController as cfg, downFile } from 'yunzaijs'
+import base from '@src/model/base.js'
 import fs from 'node:fs'
 import moment from 'moment'
-import GachaLog from './gachaLog.js'
+import GachaLog from '@src/model/gachaLog.js'
 import lodash from 'lodash'
 
 export default class ExportLog extends base {
@@ -78,7 +78,7 @@ export default class ExportLog extends base {
     let yunzaiName = cfg.package.name
     if (yunzaiName == 'miao-yunzai') {
       yunzaiName = 'Miao-Yunzai'
-    } else if (yunzaiName == 'yunzai') {
+    } else if (yunzaiName == 'yunzaijs') {
       yunzaiName = 'Yunzai-Bot'
     } else if (yunzaiName == 'trss-yunzai') {
       yunzaiName = 'TRSS-Yunzai'

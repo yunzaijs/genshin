@@ -1,1 +1,1 @@
-export * from '../miao.js'
+export * from '@src/miao.js'

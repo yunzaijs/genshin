@@ -1,2 +1,2 @@
-import { MysUser } from 'yunzai-mys'
+import { MysUser } from '@yunzaijs/mys'
 export default MysUser

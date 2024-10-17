@@ -1,8 +1,8 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 
 import lodash from 'lodash'
-import { MysInfo } from 'yunzai-mys'
-import gsCfg from './gsCfg.js'
+import { MysInfo } from '@yunzaijs/mys'
+import gsCfg from '@src/model/gsCfg.js'
 
 export default class RoleBag extends base {
   constructor(e) {

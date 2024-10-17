@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import lodash from 'lodash'
 import YAML from 'yaml'
-import { Plugin } from 'yunzai'
-import gsCfg from '../model/gsCfg.js'
-import MysNews from '../model/mysNews.js'
+import { Plugin } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
+import MysNews from '@src/model/mysNews.js'
 gsCfg.cpCfg('mys', 'pushNews')
 export class mysNews extends Plugin {
   constructor(e) {

@@ -1,7 +1,7 @@
-import { Plugin, Segment } from 'yunzai'
-import { screenshotRender } from '../puppeteer/index'
+import { Plugin, Segment } from 'yunzaijs'
+import { screenshotRender } from '@src/image/index'
 import { parse } from 'yaml'
-import { createRequire } from 'react-puppeteer'
+import { createRequire } from 'jsxp'
 import { readFileSync } from 'fs'
 const require = createRequire(import.meta.url)
 let cache: Buffer | null = null

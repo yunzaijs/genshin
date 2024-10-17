@@ -1,9 +1,9 @@
-import base from './base.js'
+import base from '@src/model/base.js'
 import lodash from 'lodash'
 import fs from 'node:fs'
-import gsCfg from './gsCfg.js'
+import gsCfg from '@src/model/gsCfg.js'
 import moment from 'moment'
-import GachaLog from './gachaLog.js'
+import GachaLog from '@src/model/gachaLog.js'
 
 export default class LogCount extends base {
   /** 五星武器 */

@@ -1,6 +1,6 @@
-import { Plugin } from 'yunzai'
-import gsCfg from '../model/gsCfg.js'
-import Note from '../model/note.js'
+import { Plugin } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
+import Note from '@src/model/note.js'
 
 //
 gsCfg.cpCfg('mys', 'set')

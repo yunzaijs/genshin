@@ -1,8 +1,8 @@
-import { Plugin } from 'yunzai'
+import { Plugin } from 'yunzaijs'
 import fs from 'node:fs'
-import GachaLog from '../model/gachaLog.js'
-import ExportLog from '../model/exportLog.js'
-import LogCount from '../model/logCount.js'
+import GachaLog from '@src/model/gachaLog.js'
+import ExportLog from '@src/model/exportLog.js'
+import LogCount from '@src/model/logCount.js'
 const _path = process.cwd() + '/plugins/genshin'
 const androidUrl = 'https://docs.qq.com/doc/DUWpYaXlvSklmVXlX'
 const file = [

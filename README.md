@@ -1,13 +1,19 @@
 ## genshin
 
-### 目录
+该插件完全依赖于喵喵插件
+
+请先安装喵喵插件后再安装
 
 ```sh
-defSet >> 配置文件
-lib    >> 被编译后的源码
-model  >> 被编译后的模块导出
-plugins >> 被启动时的插件目录结构
-resources >> 资源文件
-src    >> 源码工程目录
-yunzai-mys    >> mys模块
+# 喵喵插件
+git clone --depth=1 https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/miao-plugin/
 ```
+
+```sh
+# 原神插件
+git clone --depth=1 https://github.com/yunzaijs/genshin.git ./plugins/genshin/
+```
+
+### 帮助
+
+[点击了解所有指令](./README_HELP.md)

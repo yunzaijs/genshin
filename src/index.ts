@@ -1,1 +1,1 @@
-export * as apps from './apps/index.js'
+export * as apps from '@src/apps/index.js'

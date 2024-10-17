@@ -1,9 +1,9 @@
-import { Plugin } from 'yunzai'
+import { Plugin } from 'yunzaijs'
 import fs from 'node:fs'
-import gsCfg from '../model/gsCfg.js'
-import RoleIndex from '../model/roleIndex.js'
-import Abyss from '../model/abyss.js'
-import Weapon from '../model/weapon.js'
+import gsCfg from '@src/model/gsCfg.js'
+import RoleIndex from '@src/model/roleIndex.js'
+import Abyss from '@src/model/abyss.js'
+import Weapon from '@src/model/weapon.js'
 export class role extends Plugin {
   constructor() {
     super({

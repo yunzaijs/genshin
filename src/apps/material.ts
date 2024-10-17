@@ -1,5 +1,5 @@
-import { Plugin, downFile } from 'yunzai'
-import gsCfg from '../model/gsCfg.js'
+import { Plugin, downFile } from 'yunzaijs'
+import gsCfg from '@src/model/gsCfg.js'
 import fs from 'node:fs'
 import fetch from 'node-fetch'
 
