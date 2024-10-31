@@ -1,0 +1,39 @@
+{
+  "name": "yz-genshin",
+  "version": "1.0.0",
+  "description": "YunzaiJS Genshin",
+  "type": "module",
+  "types": "lib",
+  "private": true,
+  "scripts": {
+    "build": "lvy build",
+    "view": "lvy dev --view",
+    "format": "prettier --write .",
+    "check-format": "git diff --exit-code",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "jsxp": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.7",
+    "@types/react": "^18.3.3",
+    "@yunzaijs/mys": "^0.0.1",
+    "husky": "^9.1.5",
+    "icqq": "^0.6.10",
+    "lvyjs": "^0.1.0",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.5.3",
+    "yunzaijs": "^1.0.0-rc.4"
+  },
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "keywords": [
+    "yunzaijs"
+  ]
+}
