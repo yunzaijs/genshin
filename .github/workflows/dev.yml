@@ -37,9 +37,13 @@ jobs:
           # 初始化 dist 并推送到 deploy 分支
           cd dist/
           git init
-          git config user.email "ningmengchongshui@gmail.com"
-          git config user.name "ningmengchongshui"
+          git config --local user.email "ningmengchongshui@gmail.com"
+          git config --local user.name "ningmengchongshui"
+          git config --global core.quotepath false
+          git config --global i18n.commitEncoding utf-8
+          git config --global i18n.logOutputEncoding utf-8
           git add -A
           git commit -m "workflows - ${{ github.event.head_commit.timestamp }}"
-          git remote add origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
-          git push origin HEAD:$BRANCH_NAME -f
+          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
+          git remote -v
+          git push github HEAD:$BRANCH_NAME -f
