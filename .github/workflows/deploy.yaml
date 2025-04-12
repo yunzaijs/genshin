@@ -6,9 +6,6 @@ on:
       tag:
         description: 'Tag to create (e.g., 0.0.1)'
         required: true
-      branch:
-        description: 'Deploy branch to create (e.g., deploy-123)'
-        required: true
 
 permissions:
   contents: write
