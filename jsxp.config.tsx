@@ -1,5 +1,6 @@
 import React from 'react'
-import { defineConfig, createRequire } from 'jsxp'
+import { defineConfig } from 'jsxp'
+import { createRequire } from 'node:module'
 import Help from '@src/image/component/help'
 import { readFileSync } from 'fs'
 import { parse } from 'yaml'

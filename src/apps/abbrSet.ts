@@ -106,7 +106,7 @@ export class abbrSet extends Plugin {
       nameArr[role.name] = []
     }
 
-    let ret = []
+    let ret: string[] = []
     for (let name of setName) {
       name = name.replace(/#|星铁|设置|配置|别名|昵称/g, '')
       if (!name) continue
@@ -177,7 +177,7 @@ export class abbrSet extends Plugin {
 
     let list = lodash.uniq([...name, ...nameUser])
 
-    let msg = []
+    let msg: string[] = []
     for (let i in list) {
       let num = Number(i) + 1
       msg.push(`${num}.${list[i]}`)

@@ -1,0 +1,31 @@
+name: Tag Deploy Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Deploy branch to tag (e.g., deploy-123)'
+        required: true
+      tag:
+        description: 'Tag to create (e.g., v123)'
+        required: true
+
+jobs:
+  tag-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch all branches and tags
+        run: git fetch --all
+
+      - name: Checkout deploy branch
+        run: |
+          git checkout ${{ github.event.inputs.branch }}
+
+      - name: Create and push tag
+        run: |
+          git tag ${{ github.event.inputs.tag }}
+          git push origin ${{ github.event.inputs.tag }}

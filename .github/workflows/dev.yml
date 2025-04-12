@@ -1,0 +1,45 @@
+name: Auto Build and Deploy
+
+on:
+  push:
+    branches:
+      - dev-* # 匹配以 "dev-" 开头的分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install yarn@1.19.1 -g
+          yarn install --ignore-engines
+
+      - name: Build project
+        run: |
+          yarn build
+          build.sh
+
+      - name: Push to deploy branch
+        run: |
+          # 获取当前分支名称
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
+          echo "Deploying to branch: $BRANCH_NAME"
+
+          # 初始化 dist 并推送到 deploy 分支
+          cd dist/
+          git init
+          git config user.email "ningmengchongshui@gmail.com"
+          git config user.name "ningmengchongshui"
+          git add -A
+          git commit -m "workflows - ${{ github.event.head_commit.timestamp }}"
+          git remote add origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
+          git push origin HEAD:$BRANCH_NAME -f
