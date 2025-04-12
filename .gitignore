@@ -3,7 +3,6 @@ node_modules
 /data
 /logs
 /renderers
-/index.js
 /types
 /temp
 /lib
