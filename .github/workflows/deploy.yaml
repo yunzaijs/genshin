@@ -24,18 +24,16 @@ jobs:
       - name: Fetch all branches and tags
         run: git fetch --all
 
-      - name: Checkout deploy branch
-        run: |
-          git checkout deploy-${{ github.event.inputs.branch }}
-
       - name: Create and push tag
         run: |
+          git checkout deploy-${{ github.event.inputs.branch }}
           git tag v${{ github.event.inputs.tag }}
           git remote set-url origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
           git push origin v${{ github.event.inputs.tag }}
 
       - name: Delete deploy branch
         run: |
+          git checkout main
           git branch -d deploy-${{ github.event.inputs.branch }}
           git push origin --delete deploy-${{ github.event.inputs.branch }}
 
@@ -47,5 +45,6 @@ jobs:
 
       - name: Delete dev branch
         run: |
+          git checkout main
           git branch -d dev-${{ github.event.inputs.branch }}
           git push origin --delete dev-${{ github.event.inputs.branch }}
