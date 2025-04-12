@@ -39,7 +39,7 @@ jobs:
 
       - name: Push to deploy branch
         run: |
-          BRANCH_NAME=${{ github.event.inputs.branch }}
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
           echo "Deploying to branch: $BRANCH_NAME"
 
           cd dist/
