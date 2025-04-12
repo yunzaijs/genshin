@@ -27,6 +27,7 @@ jobs:
         run: |
           yarn build
           sh build.sh
+          cp -rf .github dist/.github
 
       - name: Push to deploy branch
         run: |
@@ -37,6 +38,7 @@ jobs:
           # 初始化 dist 并推送到 deploy 分支
           cd dist/
           git init
+          git checkout -b $BRANCH_NAME # 创建并切换到目标分支
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
           git config --global core.quotepath false
