@@ -1,4 +1,4 @@
-name: Tag Deploy Branch
+name: Tag Deploy Version
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  tag-and-push:
+  tag-version:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,9 @@ jobs:
         run: |
           git tag ${{ github.event.inputs.tag }}
           git push origin ${{ github.event.inputs.tag }}
+      # 打了版本，要自动合入到主分支
+      - name: Merge to main branch
+        run: |
+          git checkout main
+          git merge ${{ github.event.inputs.branch }}
+          git push origin main
