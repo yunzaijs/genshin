@@ -36,15 +36,3 @@ jobs:
           git checkout main
           git branch -d deploy-${{ github.event.inputs.branch }}
           git push origin --delete deploy-${{ github.event.inputs.branch }}
-
-      - name: Merge to main branch
-        run: |
-          git checkout main
-          git merge dev-${{ github.event.inputs.branch }}
-          git push origin main
-
-      - name: Delete dev branch
-        run: |
-          git checkout main
-          git branch -d dev-${{ github.event.inputs.branch }}
-          git push origin --delete dev-${{ github.event.inputs.branch }}
