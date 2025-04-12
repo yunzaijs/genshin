@@ -31,7 +31,7 @@ jobs:
       - name: Create and push tag
         run: |
           git tag v${{ github.event.inputs.tag }}
-          git remote set-url origin https://yunzaijs:${{ secrets.GH_PAT }}@github.com/yunzaijs/genshin.git
+          git remote set-url origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
           git push origin v${{ github.event.inputs.tag }}
 
       - name: Delete deploy branch
