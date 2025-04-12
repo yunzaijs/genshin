@@ -1,4 +1,4 @@
-name: Auto Build and Deploy
+name: Auto Build To Deploy
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - dev-* # 匹配以 "dev-" 开头的分支
 
 jobs:
-  build-and-deploy:
+  build-to-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
       - name: Build project
         run: |
           yarn build
-          build.sh
+          sh build.sh
 
       - name: Push to deploy branch
         run: |
