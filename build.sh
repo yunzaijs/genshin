@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
+# 确保删除旧的dist目录
+if [ -d "dist" ]; then
+    rm -rf dist
+fi
+# 创建dist目录
 mkdir dist
+# 复制文件到dist目录
 cp -rf lib dist/lib
 cp -rf model dist/model
 cp -rf resources dist/resources

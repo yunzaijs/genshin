@@ -4,6 +4,7 @@
   "description": "YunzaiJS Genshin",
   "type": "module",
   "types": "lib",
+  "main": "./index.js",
   "private": true,
   "scripts": {
     "build": "lvy build",
@@ -12,25 +13,22 @@
     "check-format": "git diff --exit-code",
     "prepare": "husky"
   },
-  "dependencies": {
-    "jsxp": "^1.0.4"
-  },
   "devDependencies": {
     "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.3",
-    "@yunzaijs/mys": "^0.0.1",
+    "@yunzaijs/mys": "^0.0.2",
     "husky": "^9.1.5",
-    "icqq": "^0.6.10",
-    "lvyjs": "^0.1.0",
+    "jsxp": "^1.2.1",
+    "lvyjs": "^0.2.19",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.5.3",
-    "yunzaijs": "^1.0.0-rc.4"
+    "yunzaijs": "^1.0.0-rc.5"
   },
   "exports": {
     ".": {
-      "import": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "import": "./index.js",
+      "types": "./index.d.ts"
     }
   },
   "keywords": [

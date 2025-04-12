@@ -1,22 +1,11 @@
-import { join } from 'path'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 /**
  * ************
  * 依赖于喵喵插件
  * ************
  */
-const components = join(
-  process.cwd(),
-  'plugins',
-  'miao-plugin',
-  'components',
-  'index.js'
-)
-const models = join(
-  process.cwd(),
-  'plugins',
-  'miao-plugin',
-  'models',
-  'index.js'
-)
+const components = require.resolve('#miao')
+const models = require.resolve('#miao.models')
 export const { Data } = await import(`file://${components}`)
 export const { Character, Weapon, Player } = await import(`file://${models}`)
