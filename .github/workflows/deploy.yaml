@@ -6,6 +6,9 @@ on:
       tag:
         description: 'Tag to create (e.g., 0.0.1)'
         required: true
+      branch:
+        description: 'Deploy branch to create (e.g., deploy-123)'
+        required: true
 
 permissions:
   contents: write
@@ -17,6 +20,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Set remote URL
+        run: |
+          git remote set-url origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -35,33 +42,32 @@ jobs:
 
       - name: Push to deploy branch
         run: |
-          # 获取当前分支名称
-          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
+          BRANCH_NAME=${{ github.event.inputs.branch }}
           echo "Deploying to branch: $BRANCH_NAME"
 
-          # 初始化 dist 并推送到 deploy 分支
           cd dist/
           git init
           git checkout -b $BRANCH_NAME
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
-          git config --global core.quotepath false
-          git config --global i18n.commitEncoding utf-8
-          git config --global i18n.logOutputEncoding utf-8
           git add -A
-          git commit -m "workflows - ${{ github.event.head_commit.timestamp }}"
-          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
-          git remote -v
-          git push github HEAD:$BRANCH_NAME -f
+          git commit -m "workflows - $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          git push origin HEAD:$BRANCH_NAME -f
 
       - name: Create and push tag
         run: |
           git tag v${{ github.event.inputs.tag }}
-          git remote set-url origin https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
           git push origin v${{ github.event.inputs.tag }}
 
       - name: Delete deploy branch
         run: |
-          git checkout main
-          git branch -d $BRANCH_NAME
-          git push origin --delete $BRANCH_NAME
+          BRANCH_NAME=${{ github.event.inputs.branch }}
+          DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+          git fetch --all
+          git checkout $DEFAULT_BRANCH
+          if git show-ref --verify --quiet refs/heads/$BRANCH_NAME; then
+            git branch -d $BRANCH_NAME
+            git push origin --delete $BRANCH_NAME
+          else
+            echo "Branch $BRANCH_NAME does not exist, skipping deletion."
+          fi
