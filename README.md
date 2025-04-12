@@ -10,7 +10,7 @@ REPO_URL="https://gitee.com/yoimiya-kokomi/miao-plugin.git"
 # 定义目标目录
 TARGET_DIR="./plugins/miao-plugin/"
 # 克隆喵喵插件
-git clone --depth=1 https://gitee.com/yoimiya-kokomi/miao-plugin.git ./plugins/miao-plugin/
+git clone --depth=1 $REPO_URL $TARGET_DIR
 ```
 
 ```sh
