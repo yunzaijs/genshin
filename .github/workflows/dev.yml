@@ -27,23 +27,4 @@ jobs:
         run: |
           yarn build
           sh build.sh
-
-      - name: Push to deploy branch
-        run: |
-          # 获取当前分支名称
-          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
-          echo "Deploying to branch: $BRANCH_NAME"
-
-          # 初始化 dist 并推送到 deploy 分支
-          cd dist/
-          git init
-          git config --local user.email "ningmengchongshui@gmail.com"
-          git config --local user.name "ningmengchongshui"
-          git config --global core.quotepath false
-          git config --global i18n.commitEncoding utf-8
-          git config --global i18n.logOutputEncoding utf-8
-          git add -A
-          git commit -m "workflows - ${{ github.event.head_commit.timestamp }}"
-          git remote add github https://yunzaijs:${{ secrets.GH_TOKEN }}@github.com/yunzaijs/genshin.git
-          git remote -v
-          git push github HEAD:$BRANCH_NAME -f
+          cp -rf .github dist/.github
