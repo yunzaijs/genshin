@@ -33,6 +33,15 @@ jobs:
           yarn build
           sh build.sh
 
+      - name: Validate branch name
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
+          echo "Validating branch name: $BRANCH_NAME"
+          if [[ "$BRANCH_NAME" == "main" || "$BRANCH_NAME" == "master" ]]; then
+            echo "Error: Deploy branch cannot be 'main' or 'master'."
+            exit 1
+          fi
+
       - name: Push to deploy branch
         run: |
           BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}" | sed 's/dev-/deploy-/')
