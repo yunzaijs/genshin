@@ -1,4 +1,4 @@
-name: 推送部署
+name: 版本发布
 
 on:
   workflow_dispatch:
@@ -25,9 +25,8 @@ jobs:
 
       - name: Validate branch name
         run: |
-          BRANCH_NAME="${GITHUB_REF##*/}"
-          echo "Validating branch name: $BRANCH_NAME"
-          if [[ ! "$BRANCH_NAME" =~ ^dev- ]]; then
+          echo "Validating branch name: ${{ github.ref_name }}"
+          if [[ ! "${{ github.ref_name }}" =~ ^dev- ]]; then
             echo "Error: Current branch does not start with 'dev-'."
             exit 1
           fi
@@ -56,8 +55,20 @@ jobs:
           DEPLOY_BRANCH="deploy"
           echo "Pushing build output to branch: $DEPLOY_BRANCH"
 
-          git fetch origin $DEPLOY_BRANCH || true
-          git checkout -B $DEPLOY_BRANCH
+          git fetch origin
+          git reset --hard
+          git clean -fd
+
+          if ! git show-ref --verify --quiet refs/remotes/origin/$DEPLOY_BRANCH; then
+            echo "Remote branch $DEPLOY_BRANCH does not exist. Creating it."
+            git checkout --orphan $DEPLOY_BRANCH
+            git reset --hard
+            git push origin $DEPLOY_BRANCH
+          else
+            git checkout -B $DEPLOY_BRANCH
+          fi
+
+          find . -mindepth 1 ! -name '.git' ! -name 'dist' -exec rm -rf {} +
           mv dist/* ./
           rm -rf dist/
 
@@ -71,8 +82,8 @@ jobs:
         run: |
           DEV_BRANCH="${GITHUB_REF##*/}"
           echo "Deleting branch: $DEV_BRANCH"
-          git log origin/${DEV_BRANCH}..HEAD
-          if [ $? -ne 0 ]; then
-            echo "Warning: There are unmerged changes in $DEV_BRANCH."
+          if ! git branch -r --merged | grep "origin/${DEV_BRANCH}"; then
+            echo "Error: Branch ${DEV_BRANCH} has unmerged changes. Aborting deletion."
+            exit 1
           fi
           git push origin --delete $DEV_BRANCH || echo "Branch $DEV_BRANCH already deleted or does not exist."
