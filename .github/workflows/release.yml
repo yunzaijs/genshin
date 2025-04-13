@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "Validating branch name: ${{ github.ref_name }}"
           if [[ ! "${{ github.ref_name }}" =~ ^dev- ]]; then
-            echo "Error: Current branch does not start with 'dev-'."
+            echo "错误: 当前分支不以“dev-”开头。"
             exit 1
           fi
 
@@ -36,7 +36,7 @@ jobs:
           DEPLOY_BRANCH="deploy"
           git fetch origin $DEPLOY_BRANCH
           if ! git show-ref --verify --quiet refs/remotes/origin/$DEPLOY_BRANCH; then
-            echo "Remote branch $DEPLOY_BRANCH does not exist. It will be created later."
+            echo "错误：远程分支$DEPLOY_branch不存在。请创建它。"
             exit 1
           fi
 
@@ -54,7 +54,7 @@ jobs:
             echo "错误: node_modules 目录不存在，依赖安装可能失败。"
             exit 1
           fi
-          
+
       - name: 打包构建
         run: |
           yarn build
@@ -64,19 +64,10 @@ jobs:
             echo "错误: 'dist' 目录不存在或为空，构建步骤可能失败。"
             exit 1
           fi
+          # 转移产物
+          mv dist ../dist
 
-      - name: 重命名产物
-        run: |
-          echo "将 'dist' 目录重命名为 'deploy'"
-          mv dist deploy
-
-          # 检查 deploy 目录是否存在且不为空
-          if [[ ! -d deploy || -z $(ls -A deploy) ]]; then
-            echo "错误: 'deploy' 目录不存在或为空，没有内容可推送。"
-            exit 1
-          fi
-
-      - name: 整理产物
+      - name: 推送产物
         run: |
           DEPLOY_BRANCH="deploy"
           echo "正在推送构建输出到分支: $DEPLOY_BRANCH"
@@ -84,48 +75,34 @@ jobs:
           # 删除依赖
           rm -rf node_modules
 
-          # 暂存当前的更改
-          git add -A
-          git stash
+          # 放弃更改
 
-          # 切换到 deploy 分支
-          git checkout -B $DEPLOY_BRANCH
+          # 切换到分支
+          git checkout $DEPLOY_BRANCH
 
-          # 恢复暂存的更改，处理冲突
-          git stash pop || {
-            echo "恢复暂存更改失败，正在解决冲突..."
-            git add -A
-          }
-
-          # 清理非 deploy 文件夹的其他内容
-          find . -mindepth 1 ! -path './deploy*' ! -path './.git*' ! -path './.gitignore' -exec rm -rf {} + || {
+          # 清理非 git 文件夹的其他内容
+          find . -mindepth 1 ! -path './.git*' -exec rm -rf {} + || {
             echo "错误: 文件查找并删除出现意外"
           }
 
-          # 移动 deploy 文件夹内容到根目录
-          mv deploy/* ./ || {
-            echo "错误: 无法将 'deploy' 目录中的文件移动到根目录，目录可能为空。"
+          # 二次清理非 git 文件夹的其他内容
+          find . -mindepth 1 ! -path './.git*' -exec rm -rf {} + || {
+            echo "错误: 文件查找并删除出现意外"
+          }
+
+          # 移动 dist 文件夹内容到根目录
+          mv ../dist/* ./ || {
+            echo "错误: 无法将 'dist' 目录中的文件移动到根目录，目录可能为空。"
             exit 1
           }
 
-          # 清理 产物目录
-          rm -rf deploy/
-
-      - name: 推送产物
-        run: |
+          # 开始产出
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
+          git config --global push.autoSetupRemote true
           git add -A
           git commit -m "${{github.event.inputs.version}} ${{ github.event.inputs.message }}"
-          git push origin $DEPLOY_BRANCH
-
-      - name: 删除 dev 分支
-        run: |
-          DEV_BRANCH="${GITHUB_REF##*/}"
-          echo "正在删除分支: $DEV_BRANCH"
-          if ! git branch -r --merged | grep "origin/${DEV_BRANCH}"; then
-            echo "错误: 分支 ${DEV_BRANCH} 有未合并的更改，列出更改如下："
-            git log origin/${DEV_BRANCH}..HEAD --oneline
+          git push origin $DEPLOY_BRANCH || {
+            echo "错误：推送失败，请检查..."
             exit 1
-          fi
-          git push origin --delete $DEV_BRANCH || echo "分支 $DEV_BRANCH 已被删除或不存在。"
+          }

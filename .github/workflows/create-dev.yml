@@ -1,4 +1,4 @@
-name: Create Dev Branch
+name: 创建分支
 
 on:
   workflow_dispatch:
@@ -11,19 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 检出代码库
         uses: actions/checkout@v2
 
-      - name: Generate branch name with timestamp
+      - name: 根据时间戳生成分支名称
         id: generate-branch
         run: |
-          # 获取 UTC 时间戳
           TIMESTAMP=$(date -u +'%Y%m%d-%H%M')
           BRANCH_NAME="dev-$TIMESTAMP"
           echo "Generated branch name: $BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
-      - name: Create new dev branch
+      - name: 创建新分支
         run: |
           NEW_BRANCH=${{ steps.generate-branch.outputs.branch_name }}
           echo "Creating branch: $NEW_BRANCH"

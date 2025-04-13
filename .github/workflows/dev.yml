@@ -1,30 +1,29 @@
-name: Auto Build To Deploy
+name: 构建检验
 
 on:
   push:
     branches:
-      - dev-* # 匹配以 "dev-" 开头的分支
+      - dev-*
 
 jobs:
   build-to-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 检出代码库
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: 设置nodejs版本
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: |
           npm install yarn@1.19.1 -g
           yarn install --ignore-engines
 
-      - name: Build project
+      - name: 打包构建
         run: |
           yarn build
           sh build.sh
-          cp -rf .github dist/.github
