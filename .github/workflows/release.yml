@@ -1,13 +1,13 @@
-name: Deploy from Dev to Deploy Branch
+name: 版本发布
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'version to create (e.g., 0.0.1)'
+        description: '要创建的版本 (例如: 0.0.1)'
         required: true
       message:
-        description: 'Commit message for the deploy branch'
+        description: '用于 deploy 分支的提交信息'
         required: true
 
 permissions:
@@ -18,61 +18,113 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository from dev branch
+      - name: 从 dev 分支检出代码库
         uses: actions/checkout@v2
         with:
           ref: ${{ github.ref_name }}
 
-      - name: Validate branch name
+      - name: 验证分支名称
         run: |
-          BRANCH_NAME="${GITHUB_REF##*/}"
-          echo "Validating branch name: $BRANCH_NAME"
-          if [[ ! "$BRANCH_NAME" =~ ^dev- ]]; then
+          echo "Validating branch name: ${{ github.ref_name }}"
+          if [[ ! "${{ github.ref_name }}" =~ ^dev- ]]; then
             echo "Error: Current branch does not start with 'dev-'."
             exit 1
           fi
 
-      - name: Setup Node.js
+      - name: 检查 deploy 分支
+        run: |
+          DEPLOY_BRANCH="deploy"
+          git fetch origin $DEPLOY_BRANCH
+          if ! git show-ref --verify --quiet refs/remotes/origin/$DEPLOY_BRANCH; then
+            echo "Remote branch $DEPLOY_BRANCH does not exist. It will be created later."
+            exit 1
+          fi
+
+      - name: 设置 Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: |
           npm install yarn@1.19.1 -g
-          yarn install --ignore-engines --verbose
-
-      - name: Build project
+          yarn install --ignore-engines
+          # 检查 node_modules 是否存在
+          if [[ ! -d node_modules ]]; then
+            echo "错误: node_modules 目录不存在，依赖安装可能失败。"
+            exit 1
+          fi
+          
+      - name: 打包构建
         run: |
           yarn build
           sh build.sh
-          if [[ ! -d dist ]]; then
-            echo "Error: dist directory does not exist. Build step might have failed."
+          # 检查 dist 目录是否存在且不为空
+          if [[ ! -d dist || -z $(ls -A dist) ]]; then
+            echo "错误: 'dist' 目录不存在或为空，构建步骤可能失败。"
             exit 1
           fi
 
-      - name: Push build output to deploy branch
+      - name: 重命名产物
+        run: |
+          echo "将 'dist' 目录重命名为 'deploy'"
+          mv dist deploy
+
+          # 检查 deploy 目录是否存在且不为空
+          if [[ ! -d deploy || -z $(ls -A deploy) ]]; then
+            echo "错误: 'deploy' 目录不存在或为空，没有内容可推送。"
+            exit 1
+          fi
+
+      - name: 整理产物
         run: |
           DEPLOY_BRANCH="deploy"
-          echo "Pushing build output to branch: $DEPLOY_BRANCH"
+          echo "正在推送构建输出到分支: $DEPLOY_BRANCH"
 
-          git fetch origin $DEPLOY_BRANCH || true
+          # 删除依赖
+          rm -rf node_modules
+
+          # 暂存当前的更改
+          git add -A
+          git stash
+
+          # 切换到 deploy 分支
           git checkout -B $DEPLOY_BRANCH
-          mv dist/* ./
-          rm -rf dist/
 
+          # 恢复暂存的更改，处理冲突
+          git stash pop || {
+            echo "恢复暂存更改失败，正在解决冲突..."
+            git add -A
+          }
+
+          # 清理非 deploy 文件夹的其他内容
+          find . -mindepth 1 ! -path './deploy*' ! -path './.git*' ! -path './.gitignore' -exec rm -rf {} + || {
+            echo "错误: 文件查找并删除出现意外"
+          }
+
+          # 移动 deploy 文件夹内容到根目录
+          mv deploy/* ./ || {
+            echo "错误: 无法将 'deploy' 目录中的文件移动到根目录，目录可能为空。"
+            exit 1
+          }
+
+          # 清理 产物目录
+          rm -rf deploy/
+
+      - name: 推送产物
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
           git add -A
           git commit -m "${{github.event.inputs.version}} ${{ github.event.inputs.message }}"
           git push origin $DEPLOY_BRANCH
 
-      - name: Delete dev branch
+      - name: 删除 dev 分支
         run: |
           DEV_BRANCH="${GITHUB_REF##*/}"
-          echo "Deleting branch: $DEV_BRANCH"
-          git log origin/${DEV_BRANCH}..HEAD
-          if [ $? -ne 0 ]; then
-            echo "Warning: There are unmerged changes in $DEV_BRANCH."
+          echo "正在删除分支: $DEV_BRANCH"
+          if ! git branch -r --merged | grep "origin/${DEV_BRANCH}"; then
+            echo "错误: 分支 ${DEV_BRANCH} 有未合并的更改，列出更改如下："
+            git log origin/${DEV_BRANCH}..HEAD --oneline
+            exit 1
           fi
-          git push origin --delete $DEV_BRANCH || echo "Branch $DEV_BRANCH already deleted or does not exist."
+          git push origin --delete $DEV_BRANCH || echo "分支 $DEV_BRANCH 已被删除或不存在。"
