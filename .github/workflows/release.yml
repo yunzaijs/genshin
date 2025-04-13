@@ -3,7 +3,7 @@ name: Deploy from Dev to Deploy Branch
 on:
   workflow_dispatch:
     inputs:
-      tag:
+      version:
         description: 'version to create (e.g., 0.0.1)'
         required: true
       message:
@@ -36,11 +36,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18'
-          cache: 'yarn'
 
       - name: Install dependencies
         run: |
-          npm install yarn@1.21.1 -g
+          npm install yarn@1.19.1 -g
           yarn install --ignore-engines --verbose
 
       - name: Build project
@@ -65,7 +64,7 @@ jobs:
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
           git add -A
-          git commit -m "$(date -u +'%Y-%m-%dT%H:%M:%SZ') ${{github.event.inputs.tag}} ${{ github.event.inputs.message }}"
+          git commit -m "${{github.event.inputs.version}} ${{ github.event.inputs.message }}"
           git push origin $DEPLOY_BRANCH
 
       - name: Delete dev branch
