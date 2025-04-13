@@ -1,0 +1,29 @@
+name: 构建检验
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-to-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码库
+        uses: actions/checkout@v2
+
+      - name: 设置nodejs版本
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: 安装依赖
+        run: |
+          npm install yarn@1.19.1 -g
+          yarn install --ignore-engines
+
+      - name: 打包构建
+        run: |
+          yarn build
+          sh build.sh
