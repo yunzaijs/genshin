@@ -112,6 +112,7 @@ jobs:
           rm -rf deploy/
 
       - name: 推送产物
+        run: |
           git config --local user.email "ningmengchongshui@gmail.com"
           git config --local user.name "ningmengchongshui"
           git add -A
