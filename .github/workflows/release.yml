@@ -1,0 +1,79 @@
+name: Deploy from Dev to Deploy Branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'version to create (e.g., 0.0.1)'
+        required: true
+      message:
+        description: 'Commit message for the deploy branch'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository from dev branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Validate branch name
+        run: |
+          BRANCH_NAME="${GITHUB_REF##*/}"
+          echo "Validating branch name: $BRANCH_NAME"
+          if [[ ! "$BRANCH_NAME" =~ ^dev- ]]; then
+            echo "Error: Current branch does not start with 'dev-'."
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: |
+          npm install yarn@1.21.1 -g
+          yarn install --ignore-engines --verbose
+
+      - name: Build project
+        run: |
+          yarn build
+          sh build.sh
+          if [[ ! -d dist ]]; then
+            echo "Error: dist directory does not exist. Build step might have failed."
+            exit 1
+          fi
+
+      - name: Push build output to deploy branch
+        run: |
+          DEPLOY_BRANCH="deploy"
+          echo "Pushing build output to branch: $DEPLOY_BRANCH"
+
+          git fetch origin $DEPLOY_BRANCH || true
+          git checkout -B $DEPLOY_BRANCH
+          mv dist/* ./
+          rm -rf dist/
+
+          git config --local user.email "ningmengchongshui@gmail.com"
+          git config --local user.name "ningmengchongshui"
+          git add -A
+          git commit -m "$(date -u +'%Y-%m-%dT%H:%M:%SZ') ${{github.event.inputs.tag}} ${{ github.event.inputs.message }}"
+          git push origin $DEPLOY_BRANCH
+
+      - name: Delete dev branch
+        run: |
+          DEV_BRANCH="${GITHUB_REF##*/}"
+          echo "Deleting branch: $DEV_BRANCH"
+          git log origin/${DEV_BRANCH}..HEAD
+          if [ $? -ne 0 ]; then
+            echo "Warning: There are unmerged changes in $DEV_BRANCH."
+          fi
+          git push origin --delete $DEV_BRANCH || echo "Branch $DEV_BRANCH already deleted or does not exist."
